@@ -1,0 +1,130 @@
+# Folder where the checkpoint and results will be saved
+save_dir: "checkpoints"
+# Weights (of the same architecture) to load before training, leave null if no pre-training. Checkpoint should be in save_dir
+pretrained_checkpoint: null
+# Resume the training of a checkpoint in save_dir. The rest of this config will be discarded.
+resume_training: null
+
+########################################################################################################################################
+# Config used to initalise the dataset
+data_cfg:
+  # Identifying name of the dataset, see data.datasets_utils.parse_datasets
+  dataset: uavid
+  # Folder containing the dataset. This should be input in the dataset config in data.datasets, as DATASET.path, 
+  # and left as null in this config unless the default needs to be overwritten
+  path: null
+  # Index of the adjacent frames, relative to the sample frame, which will be loaded alongside it. 
+  # Should be -1 for the video model unless modyfing the method
+  adjacent_frames:
+  - -1
+  # Input size, as [Height, Width]
+  crop_size:
+  - 736
+  - 1280
+  # Random square cropping during training to save memory (always used for the video model)
+  square_crop: true
+  # Enable data augmentation during training (see data.datasets_utils.get_transforms in data_type=ssltm for the list of transformations)
+  data_augmentation: true
+  # Indicate if the labels are a probabilty distribution instead of class labels. For knowledge distillation.
+  soft_labels: true
+  # Enables knowledge distillation for the dataset. See data.video.video_dataset.VideoLogitsDataset
+  logit_distillation: true
+  # Location of the logits from the teacher model for knowledge distillation. Should point to the train_logits folder of the teacher model´s results
+  logits_folder: null # FILL
+  # Min number of frames for a video to be counted. Should be left to 0 for all datasets, was used for AeroScapes only.
+  min_vid_len: 0
+  # Number of labeled frames used for training per video. Should use train_skip_frames instead.
+  labeled_frames_per_vid: null
+  # Number of frames to skip between training samples. Should only be used for knowledge distillation or when the dataset is fully labeled.
+  # For knowledge distillation, set to 2. Leave to null for normal training.
+  train_skip_frames: 2
+  # Number of frames to skip during validation step. Only useful for fully labeled datasets. Leave to 1 for others.
+  val_skip_frames: 1
+  # Method of computation of the homographies for the global registration.
+  # opencv_homos will compute them inside the dataloader, on cpu, with opencv on numpy arrays. Overwrites the computation inside the model on gpu.
+  # Seems to be slightly slower than the computation on gpu which was used for all training, but what matters is using the same method of computation
+  # as they give slightly different results
+  opencv_homos: false
+  # Algorithm used for the opencv registration. Unused if opencv_homos is false. akaze is best.
+  opencv_model_type: akaze
+
+########################################################################################################################################
+# Config for the base image model. It has to be an existing checkpoint with config file, even if untrained.
+image_model_cfg: 
+  # Folder where the image model checkpoint is saved (should be the same for all image models).
+  image_save_dir: "checkpoints"
+  # Sub-folder of the previous folder if needed. Should include the final /
+  checkpoint_folder: "" 
+  # Name of the checkpoint folder, in the format (optional@)date where the config file is date.yaml and the checkpoint date.pth.tar
+  checkpoint_name: "" # FILL
+  # If loading the highest val mIoU image model checkpoint. Never used. Will load best_model_3_date.pth.tar.
+  best_model: False
+
+########################################################################################################################################
+# Video model
+video_model_cfg:
+  # Model type, should always be "base".
+  model_name: "base"
+  # Consistency loss weight. Used values are 0.5 for normal training, 135000. for knowledge distillation.
+  # Set to 0 for no consistency loss
+  const_loss_lb: 135000. # default: 0
+  # For knowledge distillation. Post-processing of the teacher model´s logits to make them consistent with optical flow. 
+  kd_consistent_labels: true # default: true
+  # For knowledge distillation. Weight of the segmentation loss on the past frame.
+  last_out_loss_lb: 1. # default: 0
+  # Layer choice for the mixing of predictions. See models.models_consistency.parse_mixing_ops for the full list.
+  pred_mixing_op: "id"
+  # Layer choice for the similarity map computation. See models.models_consistency.parse_sim_ops for the full list.
+  sim_op: "conv"
+  # If the logits are upsampled to the full size before mixing. Set to true in all experiments, false gave worst results. 
+  upsample_before_mixing: true # default: true
+  # Interpolation method for the upsampling. Should be consistent with the image model config. No real change on results (bilinear or bicubic).
+  upsampling: bicubic # default: bilinear
+  # Registration model for the homography computation on gpu. From the Kornia library. Only used if data_cfg.opencv_homos is false.
+  # Use "disk" for deep-learning based registration, or "identity" for no registration.
+  k_registrator_model: disk # default: null
+
+########################################################################################################################################
+training_cfg:
+  # Total number of epochs, used for the learning rate scheduler.
+  num_epochs: 25
+  # Number of training epochs, can be lower than num_epochs to extand the learning rate scheduling beyond the training epochs.
+  early_stopping: 20
+  # Batch size
+  batch_size: 4
+  # num_workers in dataloader, should be set to higher number for knowledge distillation as dataloading is slow (set to 16/24 in experiments)
+  num_workers: 16
+  # Learning rate (5.0e-05 for UAVid (Hiera), 2.5e-05 for RuralScapes (Hiera), approx 1-2 times the lr of image model)
+  lr: 5.0e-05
+  # Train a layer with a different learning rate than the rest of the model, never used.
+  trained_layer: null
+  secondary_lr: 0.0001
+
+########################################################################################################################################
+optim_cfg:
+  # Optimizer, see utils.optim_utils.get_optimizer_scheduler
+  optimizer: adamw
+  # Learning rate scheduler, see utils.optim_utils.get_optimizer_scheduler
+  scheduler: cosine
+  # Weight decay used in optimizer
+  weight_decay: 0.05
+  # For SGD optimizer
+  momentum: 0.9
+  # Scheduler parameters
+  warmup_epochs: 2
+  # For polynomial scheduler
+  scheduler_power: 0.9
+  # Relative to the base lr
+  start_lr: 0.0001
+  final_lr: 0.0001
+
+########################################################################################################################################
+loss_cfg:
+  # Segmentation loss function, see utils.optim_utils.get_criterion. Should be "crossentropy" for normal training, "kldiv" for knowledge distillation.
+  loss_func: kldiv
+  # Class weigths in the segmentation loss, only for crossentropy, not used in general.
+  class_weights: null
+  # For kldiv, if label need softmax applied. Set to true for knowledge distillation.
+  softmax_on_target: true
+  # Temperature in kldiv for knowledge distillation. Only used 2.
+  temperature: 2
