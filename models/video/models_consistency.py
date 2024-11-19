@@ -1107,7 +1107,7 @@ class TCBWrapper(nn.Module):
             all_frames = torch.cat([frames] + adj_frames, dim=0)
             all_feats = self.base_model.encoder(all_frames)
             feats = [all_f[:B] for all_f in all_feats]
-            adj_feats = [all_f[B:].detach().split(B, dim=0) for all_f in all_feats]
+            adj_feats = [all_f[B:].split(B, dim=0) for all_f in all_feats] # backprop on the adj frames
 
             featmap = feats[-1]
             adj_featmaps = list(adj_feats[-1])

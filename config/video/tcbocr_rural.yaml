@@ -88,7 +88,7 @@ training_cfg:
   batch_size: 4
   # num_workers in dataloader, should be set to higher number for knowledge distillation as dataloading is slow (set to 16/24 in experiments)
   num_workers: 4
-  # Learning rate (5.0e-05 for UAVid (Hiera), 2.5e-05 for RuralScapes (Hiera), approx 1-2 times the lr of image model)
+  # Learning rate 
   lr: 5.0e-05
   # Train a layer with a different learning rate than the rest of the model, never used.
   trained_layer: null
