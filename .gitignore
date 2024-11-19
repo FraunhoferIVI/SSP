@@ -6,3 +6,5 @@ base_checkpoints/*
 
 # python cache
 __pycache__/
+
+.DS_Store
