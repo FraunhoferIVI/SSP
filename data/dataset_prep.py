@@ -7,7 +7,7 @@ from data.dataset_utils import parse_datasets, get_transforms
 def prep_video_dataset(data_cfg):
     DATASET, data_folder, video_train_idx, video_val_idx = parse_datasets(data_cfg["dataset"], path=data_cfg["path"])
 
-    augmentations, frame_transforms, frame_transforms_val, mask_transforms = get_transforms("ssltm", 
+    augmentations, frame_transforms, frame_transforms_val, mask_transforms = get_transforms("video", 
                                                                                             data_cfg["crop_size"], 
                                                                                             DATASET, 
                                                                                             data_augmentation=data_cfg.get("data_augmentation", False),

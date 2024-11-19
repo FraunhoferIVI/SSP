@@ -4,7 +4,7 @@ class UAVID:
     img_size = (1080, 1920)
     fps = 20
     n_frames_vc = 8 #16
-    path = "./datasets/UAVid"
+    path = "./datasets/UAVid" # Path to the dataset
     frame_folder = "origin"
     mask_folder = "mask"
     reg_folder = "registration"

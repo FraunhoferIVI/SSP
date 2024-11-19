@@ -21,7 +21,7 @@ def main(config, checkpoint_name, split, checkpoint_folder):
         cfg = yaml.load(cfg_file, Loader=yaml.FullLoader)
     data_cfg = cfg["data_cfg"]
 
-    vis_dir = os.path.join(cfg["results_dir"], checkpoint_folder, checkpoint_name)
+    vis_dir = os.path.join(cfg["save_dir"], checkpoint_folder, checkpoint_name)
     save_folder = os.path.join(vis_dir, split)
 
     # Dataset prep (data_utils.py)

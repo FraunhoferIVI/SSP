@@ -1,0 +1,8 @@
+# ignore subfolders inside checkpoints
+checkpoints/*
+
+# ignore subfolders inside base_checkpoints
+base_checkpoints/*
+
+# python cache
+__pycache__/

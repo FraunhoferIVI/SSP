@@ -36,7 +36,7 @@ def main(config, checkpoint_name, checkpoint_folder, split, evaluation, best_mod
     else:
         checkpoint = None
 
-    vis_dir = os.path.join(cfg["results_dir"], checkpoint_name)
+    vis_dir = os.path.join(cfg["save_dir"], checkpoint_name)
     save_folder = os.path.join(vis_dir, split)
     save_folder_colored = os.path.join(vis_dir, split + "_colored")
     save_folder_blended = os.path.join(vis_dir, split + "_blended")
