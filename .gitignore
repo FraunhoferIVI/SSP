@@ -1,10 +1,17 @@
 # ignore subfolders inside checkpoints
-checkpoints/*
+checkpoints/*/
 
 # ignore subfolders inside base_checkpoints
-base_checkpoints/*
+base_checkpoints/*/
+base_checkpoints/*.pt
 
 # python cache
 __pycache__/
+.ipynb_checkpoints/
 
-.DS_Store
+# datasets
+datasets/ruralscapes/*
+datasets/UAVid/*
+datasets/uavid_v1.5_official_release/*
+datasets/UAVid7/*
+datasets/*.zip

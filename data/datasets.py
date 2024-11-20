@@ -36,13 +36,13 @@ class UAVID:
     def convert_labels(label):
         label[label==0]=255
         label[label==1]=0
-        label[label==6]=1
-        label[label==7]=2
-        label[label==10]=3
-        label[label==12]=4
-        label[label==13]=5
-        label[label==15]=6
-        label[label==16]=7
+        label[label==2]=1
+        label[label==3]=2
+        label[label==4]=3
+        label[label==5]=4
+        label[label==6]=5
+        label[label==7]=6
+        label[label==8]=7
         return label
 
     
