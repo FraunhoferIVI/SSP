@@ -8,28 +8,24 @@
 
 ## Datasets
 
-Download UAVid and/or RuralScapes and place them in their respective folder in ```datasets```. If you want to place them in another directory, modify ```UAVID.path``` or ```RURALSCAPES.path``` in ```data/datasets.py``` accordingly.
-
 ### Downloading UAVid with VDD annotations
 
 UAVid videos can be downloaded at https://uavid.nl/#download, under Semantic Labelling with Video Support.
 
-Sample videos
-
 The VDD annotations can be obtained from https://github.com/RussRobin/VDD.
-
 
 ### Downloading RuralScapes
 
 RuralScapes can be downloaded at https://sites.google.com/site/aerialimageunderstanding/semantics-through-time-semi-supervised-segmentation-of-aerial-videos#h.q8g692kxr62m. 
 
-sample videos
-
 
 ### Preparing datasets
 
-- UAVid: `python -m tools.prepare_uavid.py`
-- RuralScapes: `python -m tools.prepare_ruralscapes.py`
+Download Dataset zip file and place them inside the datasets folder. Please refer to the bash script for further details.
+
+Then, run the bash script from the main directory to preprocess the dataset.
+
+```bash process_dataset_sh```
 
 ## Configs and saving checkpoints/results
 

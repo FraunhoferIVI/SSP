@@ -19,27 +19,27 @@ if [ ! -d "$DATASET_DIR" ]; then
     exit 1
 fi
 
-# Process UAVid datasets
-if [ -f "$UAVID_ZIP" ] && [ -f "$UAVID_EXTENDED_ZIP" ]; then
-    echo "UAVid ZIP files found. Proceeding with extraction and organization."
+# # Process UAVid datasets
+# if [ -f "$UAVID_ZIP" ] && [ -f "$UAVID_EXTENDED_ZIP" ]; then
+#     echo "UAVid ZIP files found. Proceeding with extraction and organization."
 
-    # Unzip UAVid datasets
-    unzip -o "$UAVID_ZIP" -d "$DATASET_DIR"
-    unzip -o "$UAVID_EXTENDED_ZIP" -d "$DATASET_DIR"
+#     # Unzip UAVid datasets
+#     unzip -o "$UAVID_ZIP" -d "$DATASET_DIR"
+#     unzip -o "$UAVID_EXTENDED_ZIP" -d "$DATASET_DIR"
 
-    # Run the Python scripts for UAVid
-    python "$TOOLS_DIR/$EXTRACT_UAVID_FRAMES_SCRIPT" --dataset_path "$DATASET_DIR/uavid_v1.5_official_release" --resize
-    python "$TOOLS_DIR/$ORGANIZE_UAVID_SCRIPT" --dataset_dir "$DATASET_DIR"
-else
-    echo "UAVid ZIP files not found. Skipping UAVid processing."
-fi
+#     # Run the Python scripts for UAVid
+#     python "$TOOLS_DIR/$EXTRACT_UAVID_FRAMES_SCRIPT" --dataset_path "$DATASET_DIR/uavid_v1.5_official_release" --resize
+#     python "$TOOLS_DIR/$ORGANIZE_UAVID_SCRIPT" --dataset_dir "$DATASET_DIR"
+# else
+#     echo "UAVid ZIP files not found. Skipping UAVid processing."
+# fi
 
 # Process Ruralscapes dataset
 if [ -f "$RURALSCAPES_ZIP" ]; then
     echo "Ruralscapes ZIP file found. Proceeding with extraction and organization."
 
-    # Unzip Ruralscapes dataset
-    unzip -o "$RURALSCAPES_ZIP" -d "$DATASET_DIR"
+    # # Unzip Ruralscapes dataset
+    # unzip "$RURALSCAPES_ZIP" -d "$DATASET_DIR"
 
     # Run the Python scripts for Ruralscapes
     python "$TOOLS_DIR/$EXTRACT_RURALSCAPES_FRAMES_SCRIPT" --dataset_path "$DATASET_DIR/Ruralscapes" --resize

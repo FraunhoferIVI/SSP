@@ -56,6 +56,7 @@ def remap_label_image(args):
     """
     label_path, output_path, mapping = args
     label_img = cv2.imread(label_path)
+    label_img = cv2.cvtColor(label_img, cv2.COLOR_BGR2RGB) # Convert to RGB
 
     # Create an array to map RGB values to class indices
     max_val = 256  # For 8-bit images
