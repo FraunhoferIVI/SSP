@@ -233,7 +233,7 @@ def generate_clips(source_dir, data_dir, train_txt_path, val_txt_path):
                     os.makedirs(images_clip_dir, exist_ok=True)
                     os.makedirs(masks_clip_dir, exist_ok=True)
 
-                    # Prepare file pairs for copying
+                    # Prepare file pairs for moving
                     image_file_pairs = [
                         (os.path.join(origin_dir, frame), os.path.join(images_clip_dir, frame))
                         for frame in clip if os.path.isfile(os.path.join(origin_dir, frame))
@@ -243,9 +243,9 @@ def generate_clips(source_dir, data_dir, train_txt_path, val_txt_path):
                         for frame in clip if os.path.isfile(os.path.join(mask_dir, frame))
                     ]
 
-                    # multithreading for copying files
-                    copy_files_thread(image_file_pairs)
-                    copy_files_thread(mask_file_pairs)
+                    # multithreading for moving files
+                    move_files_thread(image_file_pairs)
+                    move_files_thread(mask_file_pairs)
 
                     # Write clip name to the appropriate file
                     if seq in uavid_val_seq:
@@ -266,72 +266,6 @@ if __name__ == "__main__":
 
     organize_uavid(args.dataset_dir)
 
-
-# def organize_uavid(dataset_dir):
-#     source_images = os.path.join(dataset_dir, "uavid_v1.5_official_release")
-#     source_masks = os.path.join(dataset_dir, "UAVid7")
-#     dest_dir = os.path.join(dataset_dir, "UAVid/downsampled_original_data")
-#     data_dir = os.path.join(dataset_dir, "UAVid/data")
-#     txt_dir = os.path.join(dataset_dir, "UAVid")
-    
-#     # Create the base directory
-#     os.makedirs(dest_dir, exist_ok=True)
-#     os.makedirs(data_dir, exist_ok=True)
-#     os.makedirs(txt_dir, exist_ok=True)
-
-#     train_txt_path = os.path.join(txt_dir, "train.txt")
-#     val_txt_path = os.path.join(txt_dir, "val.txt")
-    
-#     # Process train and validation sets
-#     for dataset_type in ["uavid_train", "uavid_val"]:
-#         dataset_path = os.path.join(source_images, dataset_type)
-#         mask_path = os.path.join(source_masks, dataset_type)
-
-#         # Check if dataset path exists
-#         if not os.path.exists(dataset_path):
-#             print(f"Dataset path {dataset_path} does not exist. Skipping.")
-#             continue
-
-#         sequences = [seq for seq in os.listdir(dataset_path) if os.path.isdir(os.path.join(dataset_path, seq))]
-#         with tqdm(total=len(sequences), desc=f"Processing {dataset_type}") as pbar:
-#             # Iterate through sequences in the dataset
-#             for seq in sequences:
-#                 seq_path = os.path.join(dataset_path, seq)
-
-#                 # Create destination directories
-#                 origin_dir = os.path.join(dest_dir, seq, "origin")
-#                 mask_dir = os.path.join(dest_dir, seq, "mask")
-#                 color_mask_dir = os.path.join(dest_dir, seq, "mask_colored")
-#                 os.makedirs(origin_dir, exist_ok=True)
-#                 os.makedirs(mask_dir, exist_ok=True)
-#                 os.makedirs(color_mask_dir, exist_ok=True)
-
-#                 # Process image files move FF_Images to origin_dir
-#                 image_seq_path = os.path.join(seq_path, "FF_Images")
-#                 if os.path.exists(image_seq_path):
-#                     for file in os.listdir(image_seq_path):
-#                         src_img = os.path.join(image_seq_path, file)
-#                         dest_img = os.path.join(origin_dir, file)
-#                         if os.path.isfile(src_img):
-#                             shutil.move(src_img, dest_img)
-
-#                 # Process mask files
-#                 label_seq_path = os.path.join(seq_path, "Labels")
-#                 vdd_label_seq_path = os.path.join(mask_path, seq, "VDD_Labels")
-
-#                 if os.path.exists(label_seq_path) and os.path.exists(vdd_label_seq_path):
-#                     for file in os.listdir(label_seq_path):
-#                         label_file = os.path.join(label_seq_path, file)
-#                         vdd_file = os.path.join(vdd_label_seq_path, file)
-#                         if os.path.isfile(label_file) and os.path.isfile(vdd_file):
-#                             dest_mask_file = os.path.join(mask_dir, file)
-#                             dest_color_mask_file = os.path.join(color_mask_dir, file)
-#                             process_and_merge_masks(label_file, vdd_file, dest_mask_file, dest_color_mask_file)
-#                 else:
-#                     print(f"Labels or VDD_Labels folder missing for sequence {seq}. Skipping.")
-
-#                 # Update progress bar
-#                 pbar.update(1)
-
-#     # Generate clips in the "UAVid/data" folder and save clip names to txt files
-#     generate_clips(dest_dir, data_dir, train_txt_path, val_txt_path)
+    # delete the original images and labels folders
+    shutil.rmtree(os.path.join(args.dataset_dir, "uavid_v1.5_official_release"))
+    shutil.rmtree(os.path.join(args.dataset_dir, "UAVid7"))
