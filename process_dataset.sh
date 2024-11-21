@@ -11,7 +11,7 @@ ORGANIZE_RURALSCAPES_SCRIPT="organize_ruralscapes.py"
 # Define ZIP file paths
 UAVID_ZIP="$DATASET_DIR/uavid_v1.5_official_release.zip"
 UAVID_EXTENDED_ZIP="$DATASET_DIR/UAVid7-20241118T183546Z-001.zip" # Please replace this with the correct file name - the provided file name is just an example
-RURALSCAPES_ZIP="$DATASET_DIR/Ruralscapes.zip"
+RURALSCAPES_ZIP="$DATASET_DIR/Ruralscapes.zip" # Please ensure that the zip file is not corrupted
 
 # Check if the dataset directory exists
 if [ ! -d "$DATASET_DIR" ]; then
@@ -20,26 +20,26 @@ if [ ! -d "$DATASET_DIR" ]; then
 fi
 
 # # Process UAVid datasets
-# if [ -f "$UAVID_ZIP" ] && [ -f "$UAVID_EXTENDED_ZIP" ]; then
-#     echo "UAVid ZIP files found. Proceeding with extraction and organization."
+if [ -f "$UAVID_ZIP" ] && [ -f "$UAVID_EXTENDED_ZIP" ]; then
+    echo "UAVid ZIP files found. Proceeding with extraction and organization."
 
-#     # Unzip UAVid datasets
-#     unzip -o "$UAVID_ZIP" -d "$DATASET_DIR"
-#     unzip -o "$UAVID_EXTENDED_ZIP" -d "$DATASET_DIR"
+    # Unzip UAVid datasets
+    unzip -o "$UAVID_ZIP" -d "$DATASET_DIR"
+    unzip -o "$UAVID_EXTENDED_ZIP" -d "$DATASET_DIR"
 
-#     # Run the Python scripts for UAVid
-#     python "$TOOLS_DIR/$EXTRACT_UAVID_FRAMES_SCRIPT" --dataset_path "$DATASET_DIR/uavid_v1.5_official_release" --resize
-#     python "$TOOLS_DIR/$ORGANIZE_UAVID_SCRIPT" --dataset_dir "$DATASET_DIR"
-# else
-#     echo "UAVid ZIP files not found. Skipping UAVid processing."
-# fi
+    # Run the Python scripts for UAVid
+    python "$TOOLS_DIR/$EXTRACT_UAVID_FRAMES_SCRIPT" --dataset_path "$DATASET_DIR/uavid_v1.5_official_release" --resize
+    python "$TOOLS_DIR/$ORGANIZE_UAVID_SCRIPT" --dataset_dir "$DATASET_DIR"
+else
+    echo "UAVid ZIP files not found. Skipping UAVid processing."
+fi
 
 # Process Ruralscapes dataset
 if [ -f "$RURALSCAPES_ZIP" ]; then
     echo "Ruralscapes ZIP file found. Proceeding with extraction and organization."
 
     # # Unzip Ruralscapes dataset
-    # unzip "$RURALSCAPES_ZIP" -d "$DATASET_DIR"
+    unzip -o "$RURALSCAPES_ZIP" -d "$DATASET_DIR"
 
     # Run the Python scripts for Ruralscapes
     python "$TOOLS_DIR/$EXTRACT_RURALSCAPES_FRAMES_SCRIPT" --dataset_path "$DATASET_DIR/Ruralscapes" --resize
