@@ -56,7 +56,7 @@ image_model_cfg:
   # Sub-folder of the previous folder if needed. Should include the final /
   checkpoint_folder: "" 
   # Name of the checkpoint folder, in the format (optional@)date where the config file is date.yaml and the checkpoint date.pth.tar
-  checkpoint_name: "21-11_11-30" # FILL
+  checkpoint_name: "" # FILL
   # If loading the highest val mIoU image model checkpoint. Never used. Will load best_model_3_date.pth.tar.
   best_model: False
 

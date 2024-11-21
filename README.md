@@ -1,9 +1,11 @@
 # High Temporal Consistency through Semantic Similarity Propagation in Semi-Supervised Video Semantic Segmentation for Autonomous Flight
 
+This repository includes the training and evaluation code for SSP and KD-SSP, on the UAVid and RuralScapes datasets. No checkpoints are provided at the moment.
+
 
 ## Requirements
 
-```pip install -r requirements.txt```
+A relatively recent version of Python (ex: 3.10) and PyTorch (ex: 2.3) are required. All dependencies can be installed in a virtual environment with ```pip install -r requirements.txt```.
 
 
 ## Datasets
@@ -21,17 +23,15 @@ RuralScapes can be downloaded at https://sites.google.com/site/aerialimageunders
 
 ### Preparing datasets
 
-Download Dataset zip file and place them inside the datasets folder. Please refer to the bash script for further details.
+The datasets zip files should be placed inside the `datasets` folder. The following bash script can then be run to preprocess them for the right folder structure: ```bash process_dataset_sh```. Files and folder names may have to be adjusted inside the script.
 
-Then, run the bash script from the main directory to preprocess the dataset.
-
-```bash process_dataset_sh```
+This script will prepare both datasets, if only one is needed then the commands related to the other can be commented.
 
 ## Configs and saving checkpoints/results
 
 Configs for training are stored in ```config/image``` and ```config/video``` for image segmentation models and SSP/other video methods respectively.
 
-Trained checkpoints and their results will be stored in the ```save_dir``` argument of their config file, default: ```./checkpoints```. Name of their folder will be the date of launch. The saved checkpoint corresponds to the last training epoch. "Best model" checkpoints are chosen based on validation mIoU and were ignored for the reported results.
+Trained checkpoints and their results will be stored in the ```save_dir``` argument of their config file, default: ```./checkpoints```. Name of their folder will be the date and time of launch. The saved checkpoint corresponds to the last training epoch.
 
 
 ## Train image models (baseline)

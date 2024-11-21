@@ -156,7 +156,7 @@ def main(config):
         val_miou2.append(results["mIoU2"])
         val_classes_mIoU.append(results["classes_mIoU"])
         per_classes_mIoU = {v: results["classes_mIoU"][k-1].item() for (k,v) in DATASET.classes.items() if k>0} if DATASET.ignore_index > 0 else {v: results["classes_mIoU"][k].item() for (k,v) in DATASET.classes.items()}
-        print(f"Epoch {epoch+1}: train loss = {train_loss:.4f}, , train mIoU = {train_global_miou[-1]:.4f}, validation loss = {val_losses[-1]:.4f}, val mIoU = {val_global_miou[-1]:.4f}")
+        print(f"Epoch {epoch+1}: train loss = {train_loss:.4f}, validation loss = {val_losses[-1]:.4f}, val mIoU = {val_global_miou[-1]:.4f}")
         print("-"*70)
         
         save_dict = {

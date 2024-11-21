@@ -198,10 +198,10 @@ def save_model(save_dict, cfg, save_dir, date, DATASET):
         f.write(" -- ")
         f.write(f"Epoch {ep}")
         f.write(" -- ")
-        f.write(f"train loss = {train_loss:.4f}, train mIoU = {train_global_miou:.4f}, validation loss = {val_loss:.4f}, val mIoU = {val_global_miou:.4f}")
+        f.write(f"train loss = {train_loss:.4f}, validation loss = {val_loss:.4f}, val mIoU = {val_global_miou:.4f}")
         f.write("\n")
-        if train_per_classes_mIoU is not None:
-            f.write(f"Train per class mIoU: {train_per_classes_mIoU}\n")
+        #if train_per_classes_mIoU is not None:
+        #    f.write(f"Train per class mIoU: {train_per_classes_mIoU}\n")
         if val_per_classes_mIoU is not None:
             f.write(f"Val per class mIoU: {val_per_classes_mIoU}\n")
 

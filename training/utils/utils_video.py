@@ -27,7 +27,7 @@ def save_model(save_dict, cfg, save_dir, date, per_classes_mIoU=None):
         f.write(" -- ")
         f.write(f"Epoch {ep}")
         f.write(" -- ")
-        f.write(f"train loss = {train_loss:.4f}, const = {train_const_loss:.4f}, validation loss = {val_loss:.4f}, const = {val_const_loss:.4f}, val mIoU = {val_global_miou:.4f}")
+        f.write(f"train loss = {train_loss:.4f}, train consist loss = {train_const_loss:.4f}, validation loss = {val_loss:.4f}, val consist loss = {val_const_loss:.4f}, val mIoU = {val_global_miou:.4f}")
         f.write("\n")
         if per_classes_mIoU is not None:
             f.write(f"Per class mIoU: {per_classes_mIoU}\n")
