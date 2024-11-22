@@ -4,7 +4,7 @@
 ![](resource/SSP_Architecture.png)
 
 #### Visualization
-<video controls src="resource/vis.mp4" title="Visualization"></video>
+[Visualization](resource/vis.mp4)
 
 ## Introduction
 This repository contains the training and evaluation code for **Semantic Similarity Propagation (SSP)** and **Knowledge Distillation with SSP (KD-SSP)**, evaluated on the [UAVid](https://uavid.nl/) and [RuralScapes](https://sites.google.com/site/aerialimageunderstanding/semantics-through-time-semi-supervised-segmentation-of-aerial-videos) datasets. The work represents our efforts towards improving temporal consistency and efficiency in semi-supervised video semantic segmentation, targeting applications in autonomous UAV flight.
