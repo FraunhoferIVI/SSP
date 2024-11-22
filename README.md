@@ -1,12 +1,46 @@
 # High Temporal Consistency through Semantic Similarity Propagation in Semi-Supervised Video Semantic Segmentation for Autonomous Flight
 
-This repository includes the training and evaluation code for SSP and KD-SSP, on the UAVid and RuralScapes datasets. No checkpoints are provided at the moment.
+#### Model Architecture
+![](resource/SSP_Architecture.png)
 
+#### Visualization
+<video src="resource/vis.mp4" autoplay loop muted playsinline>
+</video>
+
+## Introduction
+This repository contains the training and evaluation code for **Semantic Similarity Propagation (SSP)** and **Knowledge Distillation with SSP (KD-SSP)**, evaluated on the [UAVid](https://uavid.nl/) and [RuralScapes](https://sites.google.com/site/aerialimageunderstanding/semantics-through-time-semi-supervised-segmentation-of-aerial-videos) datasets. The work represents our efforts towards improving temporal consistency and efficiency in semi-supervised video semantic segmentation, targeting applications in autonomous UAV flight.
+
+## Acknowledgments
+Special thanks to **Cedric Vincent**, the main contributor to this work.
+
+## Milestone
+- 2024/11/24: We have submitted this work to **CVPR 2025**. Wish us the best as we aim for recognition at one of the leading conferences in computer vision.
+
+## List of contents
+- [Acknowledgments](#acknowledgments)
+- [Milestone](#milestone)
+- [Requirements](#requirements)
+- [Datasets](#datasets)
+  - [Downloading UAVid with VDD annotations](#downloading-uavid-with-vdd-annotations)
+  - [Downloading RuralScapes](#downloading-ruralscapes)
+- [Configs and saving checkpoints/results](#configs-and-saving-checkpointsresults)
+- [Train image models (baseline)](#train-image-models-baseline)
+- [Train SSP](#train-ssp)
+- [Train teacher model](#train-teacher-model)
+  - [Training](#training)
+  - [Save prediction for knowledge distillation](#save-prediction-for-knowledge-distillation)
+- [Train KD-SSP](#train-kd-ssp)
+- [Train Other video models](#train-other-video-models)
+- [Evaluate model](#evaluate-model)
+  - [Only compute metrics](#only-compute-metrics)
+  - [With visualization](#with-visualization)
+- [Ablation Study](#ablation-study)
+- [License](#license)
+- [Contributing](#contributing)
+- [References](#references)
 
 ## Requirements
-
 A relatively recent version of Python (ex: 3.10) and PyTorch (ex: 2.3) are required. All dependencies can be installed in a virtual environment with ```pip install -r requirements.txt```.
-
 
 ## Datasets
 
@@ -18,8 +52,9 @@ The VDD annotations can be obtained from https://github.com/RussRobin/VDD.
 
 ### Downloading RuralScapes
 
-RuralScapes can be downloaded at https://sites.google.com/site/aerialimageunderstanding/semantics-through-time-semi-supervised-segmentation-of-aerial-videos#h.q8g692kxr62m. 
+RuralScapes can be downloaded at https://sites.google.com/site/aerialimageunderstanding/semantics-through-time-semi-supervised-segmentation-of-aerial-videos#h.q8g692kxr62m.
 
+**NOTE**: Currently we are facing some corrupted zip file issue with the Ruralscapes dataset
 
 ### Preparing datasets
 
@@ -129,3 +164,14 @@ See the respective config files to view the different arguments:
 - No interpolation: `python -m training.train_video ablation_interpolation.yaml`
 - No consistency loss: `python -m training.train_video ablation_consistencyloss.yaml`
 - Untrained image model: `python -m training.train_video untrainedimage.yaml`, fill `image_model_cfg.checkpoint_name` with an untrained checkpoint
+
+## License
+[MIT](LICENSE)
+
+## Contributing
+Contributions are welcome! Please open an issue or a pull request.
+
+## References
+- [Transformers](https://huggingface.co/docs/transformers/en/index)
+- [SAM2](https://github.com/facebookresearch/sam2)
+- [RAFT](https://github.com/princeton-vl/RAFT/tree/master/core)
