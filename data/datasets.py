@@ -1,3 +1,10 @@
+# UAVid: A Semantic Segmentation Dataset for UAV Imagery
+# VDD: Varied Drone Dataset for Semantic Segmentation
+# Arxiv Link UAVid: https://arxiv.org/abs/1810.10438
+# Arxiv Link VDD: https://arxiv.org/pdf/2305.13608
+
+# Here we use the extended classes from the VDD dataset
+
 class UAVID:
     name = "UAVid"
     n_classes = 8
@@ -35,16 +42,12 @@ class UAVID:
     ignore_index = 255
     def convert_labels(label):
         label[label==0]=255
-        label[label==1]=0
-        label[label==2]=1
-        label[label==3]=2
-        label[label==4]=3
-        label[label==5]=4
-        label[label==6]=5
-        label[label==7]=6
-        label[label==8]=7
+        label = label-1
+        label[label>=8]=255
         return label
 
+# Introduced in ACCV 2020: [Semantics through Time: Semi-supervised Segmentation of Aerial Videos with Iterative Label Propagation]
+# Arxiv Link: https://arxiv.org/pdf/2010.01910v1
     
 class RURALSCAPES:
     name = "RuralScapes"
@@ -93,4 +96,48 @@ class RURALSCAPES:
         label[label==0]=255
         label = label-1
         label[label>=12]=255
+        return label
+
+# Introduced in ICCV 2023 workshop paper: [Self-supervised Hypergraphs for Learning Multiple World Interpretations]
+# Arxiv Link: https://arxiv.org/abs/2308.07615
+
+class DRONESCAPES:
+    name = "DroneScapes"
+    n_classes = 8
+    img_size = (1440, 2560)
+    fps = 15
+    n_frames_vc = 8 #16
+    path = "./datasets/dronescapes"
+    frame_folder = "origin"
+    mask_folder = "mask"
+    reg_folder = "registration"
+    label_extension = ".png"
+    img_extension = ".png"
+    classes = {
+        0: "background",
+        1: "land",
+        2: "forest",
+        3: "residential",
+        4: "road",
+        5: "little-objects",
+        6: "sky",
+        7: "water",
+        8: "hill"
+    }
+    colors = {
+        0: (0,0,0),
+        1: (0,255,0),
+        2: (0,127,0),
+        3: (255,255,0),
+        4: (255,255,255),
+        5: (255,0,0),
+        6: (0,0,255),
+        7: (0,255,255),
+        8: (127,127,63),
+    }
+    ignore_index = 255
+    def convert_labels(label):
+        label[label==0]=255
+        label = label-1
+        label[label>=8]=255
         return label

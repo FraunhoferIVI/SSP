@@ -16,3 +16,4 @@ datasets/uavid_v1.5_official_release/*
 datasets/UAVid7/*
 datasets/*.zip
 datasets/Ruralscapes/*
+datasets/dronescapes/*

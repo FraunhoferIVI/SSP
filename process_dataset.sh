@@ -12,6 +12,7 @@ ORGANIZE_RURALSCAPES_SCRIPT="organize_ruralscapes.py"
 UAVID_ZIP="$DATASET_DIR/uavid_v1.5_official_release.zip"
 UAVID_EXTENDED_ZIP="$DATASET_DIR/UAVid7-20241118T183546Z-001.zip" # Please replace this with the correct file name - the provided file name is just an example
 RURALSCAPES_ZIP="$DATASET_DIR/Ruralscapes.zip" # Please ensure that the zip file is not corrupted
+DRONESCAPES_ZIP="$DATASET_DIR/Dronescapes.zip" # Please note that the Dronescapes dataset is large and may take a while to extract - is already preprocessed
 
 # Check if the dataset directory exists
 if [ ! -d "$DATASET_DIR" ]; then
@@ -46,6 +47,16 @@ if [ -f "$RURALSCAPES_ZIP" ]; then
     python "$TOOLS_DIR/$ORGANIZE_RURALSCAPES_SCRIPT" --dataset_dir "$DATASET_DIR"
 else
     echo "Ruralscapes ZIP file not found. Skipping Ruralscapes processing."
+fi
+
+# Process Dronescapes dataset
+if [ -f "$DRONESCAPES_ZIP" ]; then
+    echo "Dronescapes ZIP file found. Proceeding with extraction and organization."
+
+    # # Unzip Dronescapes dataset
+    unzip -o "$DRONESCAPES_ZIP" -d "$DATASET_DIR"
+else
+    echo "Dronescapes ZIP file not found. Skipping Dronescapes processing."
 fi
 
 echo "Script execution completed."
