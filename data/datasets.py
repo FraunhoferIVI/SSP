@@ -141,3 +141,81 @@ class DRONESCAPES:
         label = label-1
         label[label>=8]=255
         return label
+
+# Our own dataset: ACPPD
+class ACPPD:
+    name = "ACPPD"
+    n_classes = 26
+    img_size = (1440, 2560) # vary
+    fps = 15
+    n_frames_vc = 8 #16
+    path = "./datasets/acppd"
+    frame_folder = "origin"
+    mask_folder = "mask"
+    reg_folder = "registration"
+    label_extension = ".png"
+    img_extension = ".png"
+    classes={
+        0: "unlabeled",
+        1: "road",
+        2: "dirt",
+        3: "gravel",
+        4: "rock",
+        5: "grass",
+        6: "vegetation",
+        7: "tree",
+        8: "obstacle",
+        9: "animals",
+        10: "person",
+        11: "bicycle",
+        12: "vehicle",
+        13: "water",
+        14: "boat",
+        15: "building",
+        16: "roof",
+        17: "sky",
+        18: "drone",
+        19: "train-track",
+        20: "power-cable",
+        21: "power-cable-tower",
+        22: "wind-turbine-blade",
+        23: "wind-turbine-tower",
+        24: "walkway",
+        25: "bridge",
+        26: "airplanes",
+    }
+    colors={
+        0: (0, 0, 0),
+        1: (128, 0, 128),
+        2: (128, 0, 0),
+        3: (192, 192, 192),
+        4: (246, 120, 40),
+        5: (0, 255, 0),
+        6: (112, 148, 32),
+        7: (64, 64, 0),
+        8: (255, 255, 0),
+        9: (255, 153, 204),
+        10: (255, 16, 255),
+        11: (255, 204, 153),
+        12: (0, 128, 128),
+        13: (0, 0, 255),
+        14: (109, 120, 150),
+        15: (255, 0, 0),
+        16: (64, 160, 120),
+        17: (0, 255, 255),
+        18: (192, 128, 128),
+        19: (56, 62, 66),
+        20: (255, 160, 0),
+        21: (106, 0, 255),
+        22: (16, 127, 255),
+        23: (157, 255, 86),
+        24: (204, 163, 72),
+        25: (171, 199, 245),
+        26: (245, 227, 118),
+    }
+    ignore_index = 255
+    def convert_labels(label):
+        label[label==0]=255
+        label = label-1
+        label[label>=26]=255
+        return label

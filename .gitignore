@@ -17,3 +17,7 @@ datasets/UAVid7/*
 datasets/*.zip
 datasets/Ruralscapes/*
 datasets/dronescapes/*
+datasets/acppd/*
+
+# bash scripts
+train.bash

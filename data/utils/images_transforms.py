@@ -113,7 +113,9 @@ class LabelToTensor(object):
         if self.convert_labels is not None:
             label = self.convert_labels(label.copy())
         return torch.LongTensor(label)
-    
+
+# https://github.com/albumentations-team/albumentations/blob/bb6a6fa29f3bc259869bba6742ca8cc6087a00c1/albumentations/augmentations/crops/functional.py#L128
+# See how "fcrops.get_center_crop_coords" works: image_shape: tuple[int, int], crop_shape: tuple[int, int] -> tuple[int, int, int, int]
 class CenterCrop(object):
     def __init__(self, size):
         super(CenterCrop, self).__init__()
@@ -122,7 +124,7 @@ class CenterCrop(object):
         if isinstance(img, Image.Image):
             img = np.array(img)
         image_shape = img.shape[:2]
-        crop_coords = fcrops.get_center_crop_coords(image_shape[0], image_shape[1], self.size[0], self.size[1])
+        crop_coords = fcrops.get_center_crop_coords((image_shape[0], image_shape[1]), (self.size[0], self.size[1])) 
         x_min = crop_coords[0]
         y_min = crop_coords[1]
         x_max = crop_coords[2]
@@ -466,13 +468,15 @@ class VideoColorJitter(object):
 
         return alpha, beta, hue_shift, sat_shift, val_shift, gamma
 
+    # https://github.com/albumentations-team/albumentations/blob/main/albumentations/augmentations/crops/functional.py
+    # albumentations.augmentations.functional' has no attribute 'brightness_contrast_adjust' -> use 'multiply_add'
     def __call__(self, frame, adj_frames, ref_frame):
         if random.random() < self.prob:
             alpha, beta, hue_shift, sat_shift, val_shift, gamma = self.get_params()
-            frame = fmain.brightness_contrast_adjust(frame, alpha, beta, True)
-            adj_frames = [fmain.brightness_contrast_adjust(f, alpha, beta, True) for f in adj_frames]
+            frame = fmain.multiply_add(frame, alpha, beta) # 
+            adj_frames = [fmain.multiply_add(f, alpha, beta) for f in adj_frames]
             if ref_frame is not None:
-                ref_frame = fmain.brightness_contrast_adjust(ref_frame, alpha, beta, True)
+                ref_frame = fmain.multiply_add(ref_frame, alpha, beta)
 
             frame = fmain.shift_hsv(frame, hue_shift, sat_shift, val_shift)
             adj_frames = [fmain.shift_hsv(f, hue_shift, sat_shift, val_shift) for f in adj_frames]
