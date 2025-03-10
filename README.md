@@ -13,6 +13,7 @@ This repository contains the training and evaluation code for **Semantic Similar
 Special thanks to **Cedric Vincent**, the main contributor to this work.
 
 ## Milestone
+- 2025/02/26: Our work has been accepted to **CVPR 2025**!
 - 2024/11/24: We have submitted this work to **CVPR 2025**. Wish us the best as we aim for recognition at one of the leading conferences in computer vision.
 
 ## List of contents

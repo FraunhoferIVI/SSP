@@ -18,6 +18,7 @@ datasets/*.zip
 datasets/Ruralscapes/*
 datasets/dronescapes/*
 datasets/acppd/*
+datasets/testscapes/*
 
 # bash scripts
 train.bash

@@ -177,6 +177,81 @@ def temporal_consistency(frame_list, pred_list, model_raft, n_classes, device):
     tc = tc/len(frame_list[:-1])
     return tc
 
+# new temporal consistency metrics based on: https://arxiv.org/pdf/2308.07615
+def temporal_consistency_proposed(frame_list, pred_list, model_raft, n_classes, device):
+    """
+    Compute temporal consistency for segmentation.
+    For each center frame (of a 5-frame chain), warp the segmentation predictions
+    from the two frames before and after into the center frame’s coordinate system.
+    Then, for each pixel, the consistency is the percentage of the 5 votes
+    that agree with the majority class.
+    
+    Args:
+      frame_list: list of frames (as numpy arrays).
+      pred_list: list of segmentation predictions (numpy arrays of shape HxW with integer class labels).
+      model_raft: optical flow model.
+      n_classes: number of segmentation classes.
+      device: torch device.
+      
+    Returns:
+      Average segmentation consistency (a value between 0 and 1).
+    """
+    chain_length = 5
+    consistency_total = 0.0
+    num_chains = 0
+    
+    # We need at least 2 frames before and 2 after the center
+    for i in range(2, len(frame_list) - 2):
+        # Get height and width from the center prediction
+        H, W = pred_list[i].shape
+        # List to collect predictions for the 5-frame chain
+        chain_preds = []
+        
+        # Build the temporal chain: frames i-2, i-1, i, i+1, i+2
+        for offset in range(-2, 3):
+            j = i + offset
+            if j == i:
+                # Center frame: no warping needed.
+                pred_center = torch.from_numpy(pred_list[j])
+                chain_preds.append(pred_center.unsqueeze(0))  # shape: (1, H, W)
+            else:
+                # Warp the prediction from frame j to frame i.
+                src_frame = torch.from_numpy(frame_list[j]).unsqueeze(0).to(device)
+                tgt_frame = torch.from_numpy(frame_list[i]).unsqueeze(0).to(device)
+                with torch.no_grad():
+                    model_raft.eval()
+                    # Compute optical flow from source (j) to target (i)
+                    _, flow = model_raft(tgt_frame, src_frame, iters=20, test_mode=True)
+                flow = flow.detach().cpu()
+                # Get the prediction for frame j and add channel dims: (1,1,H,W)
+                pred_j = torch.from_numpy(pred_list[j]).unsqueeze(0).unsqueeze(0).float()
+                warped_pred = flowwarp(pred_j, flow)  # assume shape remains (1,1,H,W)
+                # Remove extra dims to get (H,W)
+                warped_pred = warped_pred.squeeze(0).squeeze(0).long()
+                chain_preds.append(warped_pred.unsqueeze(0))
+        
+        # Stack into tensor: shape (5, H, W)
+        chain_tensor = torch.cat(chain_preds, dim=0)
+        
+        # Compute the consistency map per pixel.
+        consistency_map = torch.zeros((H, W))
+        # Loop over each pixel (this can be vectorized for efficiency)
+        chain_np = chain_tensor.cpu().numpy()  # shape (5, H, W)
+        for y in range(H):
+            for x in range(W):
+                pixel_chain = chain_np[:, y, x]
+                # Count the frequency of each label along the chain.
+                values, counts = np.unique(pixel_chain, return_counts=True)
+                max_votes = counts.max()
+                consistency_map[y, x] = max_votes / chain_length
+        
+        consistency_total += consistency_map.mean().item()
+        num_chains += 1
+        print(f"Chain {num_chains}: consistency = {consistency_map.mean().item():.4f}")
+        print(consistency_total)
+    
+    return consistency_total / num_chains if num_chains > 0 else 0
+
 
 def temporal_consistency_forwardbackward(frame_list, pred_list, model_raft, n_classes, device):
     tc = 0

@@ -141,6 +141,47 @@ class DRONESCAPES:
         label = label-1
         label[label>=8]=255
         return label
+    
+class TESTSCAPES:
+    name = "testscapes"
+    n_classes = 8
+    img_size = (1440, 2560)
+    fps = 15
+    n_frames_vc = 8 #16
+    path = "./datasets/testscapes"
+    frame_folder = "origin"
+    mask_folder = "mask"
+    reg_folder = "registration"
+    label_extension = ".png"
+    img_extension = ".png"
+    classes = {
+        0: "background",
+        1: "land",
+        2: "forest",
+        3: "residential",
+        4: "road",
+        5: "little-objects",
+        6: "sky",
+        7: "water",
+        8: "hill"
+    }
+    colors = {
+        0: (0,0,0),
+        1: (0,255,0),
+        2: (0,127,0),
+        3: (255,255,0),
+        4: (255,255,255),
+        5: (255,0,0),
+        6: (0,0,255),
+        7: (0,255,255),
+        8: (127,127,63),
+    }
+    ignore_index = 255
+    def convert_labels(label):
+        label[label==0]=255
+        label = label-1
+        label[label>=8]=255
+        return label
 
 # Our own dataset: ACPPD
 class ACPPD:

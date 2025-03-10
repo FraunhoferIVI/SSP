@@ -1,5 +1,5 @@
 import os
-from data.datasets import UAVID, RURALSCAPES, DRONESCAPES, ACPPD
+from data.datasets import UAVID, RURALSCAPES, DRONESCAPES, ACPPD, TESTSCAPES
 
 import cv2
 import data.utils.images_transforms as image_transforms
@@ -18,6 +18,8 @@ def parse_datasets(name, path=None, split="train"):
         DATASET = DRONESCAPES
     elif name == "acppd":
         DATASET = ACPPD
+    elif name == "testscapes":
+        DATASET = TESTSCAPES
     assert DATASET is not None, f"Dataset {name} not implemented"
 
     if path is None:
