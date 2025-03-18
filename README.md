@@ -1,28 +1,36 @@
-# High Temporal Consistency through Semantic Similarity Propagation in Semi-Supervised Video Semantic Segmentation for Autonomous Flight
+# [CVPR 2025] High Temporal Consistency through Semantic Similarity Propagation in Semi-Supervised Video Semantic Segmentation for Autonomous Flight
 
 #### Model Architecture
+
 ![](resource/SSP_Architecture.png)
 
 #### Visualization
+
 [Visualization](resource/vis.mp4)
 
 ## Introduction
+
 This repository contains the training and evaluation code for **Semantic Similarity Propagation (SSP)** and **Knowledge Distillation with SSP (KD-SSP)**, evaluated on the [UAVid](https://uavid.nl/) and [RuralScapes](https://sites.google.com/site/aerialimageunderstanding/semantics-through-time-semi-supervised-segmentation-of-aerial-videos) datasets. The work represents our efforts towards improving temporal consistency and efficiency in semi-supervised video semantic segmentation, targeting applications in autonomous UAV flight.
 
 ## Acknowledgments
-Special thanks to **Cedric Vincent**, the main contributor to this work.
+
+Special thanks to [**Cedric Vincent**](), the main contributor to this work.
 
 ## Milestone
+
+- 2025/03/24: The official implementation of SSP is now open source.
 - 2025/02/26: Our work has been accepted to **CVPR 2025**!
 - 2024/11/24: We have submitted this work to **CVPR 2025**. Wish us the best as we aim for recognition at one of the leading conferences in computer vision.
 
 ## List of contents
+
 - [Acknowledgments](#acknowledgments)
 - [Milestone](#milestone)
 - [Requirements](#requirements)
 - [Datasets](#datasets)
   - [Downloading UAVid with VDD annotations](#downloading-uavid-with-vdd-annotations)
   - [Downloading RuralScapes](#downloading-ruralscapes)
+  - [Preparing datasets](#preparing-datasets)
 - [Configs and saving checkpoints/results](#configs-and-saving-checkpointsresults)
 - [Train image models (baseline)](#train-image-models-baseline)
 - [Train SSP](#train-ssp)
@@ -40,19 +48,49 @@ Special thanks to **Cedric Vincent**, the main contributor to this work.
 - [References](#references)
 
 ## Requirements
+
 A relatively recent version of Python (ex: 3.10) and PyTorch (ex: 2.3) are required. All dependencies can be installed in a virtual environment with ```pip install -r requirements.txt```.
+
+### Using pip
+
+Create a virtual environment and install dependencies:
+
+```bash
+python -m venv env
+source env/bin/activate  # On Windows use: .\env\Scripts\activate
+pip install -r requirements.txt
+```
+
+### Using uv (recommended)
+
+Alternatively, use uv—a modern Python dependency manager—to install dependencies and manage virtual environments directly within this repository.
+First, install uv following the [official instructions](https://docs.astral.sh/uv/).
+Then, create a virtual environment and install dependencies:
+
+```bash
+uv venv
+uv pip sync
+```
+
+To run scripts within the virtual environment created by uv, use:
+
+```bash
+uv run python script.py
+```
+
+For more details, refer to the [official uv documentation](https://docs.astral.sh/uv/).
 
 ## Datasets
 
 ### Downloading UAVid with VDD annotations
 
-UAVid videos can be downloaded at https://uavid.nl/#download, under Semantic Labelling with Video Support.
+UAVid videos can be downloaded at <https://uavid.nl/#download>, under Semantic Labelling with Video Support.
 
-The VDD annotations can be obtained from https://github.com/RussRobin/VDD.
+The VDD annotations can be obtained from <https://github.com/RussRobin/VDD>.
 
 ### Downloading RuralScapes
 
-RuralScapes can be downloaded at https://sites.google.com/site/aerialimageunderstanding/semantics-through-time-semi-supervised-segmentation-of-aerial-videos#h.q8g692kxr62m.
+RuralScapes can be downloaded at <https://sites.google.com/site/aerialimageunderstanding/semantics-through-time-semi-supervised-segmentation-of-aerial-videos#h.q8g692kxr62m>.
 
 **NOTE**: Currently we are facing some corrupted zip file issue with the Ruralscapes dataset
 
@@ -68,10 +106,9 @@ Configs for training are stored in ```config/image``` and ```config/video``` for
 
 Trained checkpoints and their results will be stored in the ```save_dir``` argument of their config file, default: ```./checkpoints```. Name of their folder will be the date and time of launch. The saved checkpoint corresponds to the last training epoch.
 
-
 ## Train image models (baseline)
 
-For the pre-trained Hiera weights, download the checkpoint ```sam2_hiera_small``` at https://github.com/facebookresearch/sam2?tab=readme-ov-file#sam-2-checkpoints and place it in ```base_checkpoints/```.
+For the pre-trained Hiera weights, download the checkpoint ```sam2_hiera_small``` at <https://github.com/facebookresearch/sam2?tab=readme-ov-file#sam-2-checkpoints> and place it in ```base_checkpoints/```.
 
 With pre-written configs:
 
@@ -83,21 +120,23 @@ See ```config/image/config_base.yaml``` for an explanation of the image model co
 ## Train SSP
 
 Training SSP requires an image model checkpoint (trained or not). To obtain an untrained image model:
+
 - UAVid: ```python -m training.train_image untrained_uavid.yaml```
 - RuralScapes: ```python -m training.train_image untrained_rural.yaml```
 
 The name of the image checkpoint must be written in the config of SSP, under the ```image_model_cfg.checkpoint_name``` argument. The ```image_model_cfg.image_save_dir``` field indicates where this checkpoint is found. This applies to all video configs.
 
 To train SSP:
+
 - UAVid: ```python -m training.train_video ssp_uavid.yaml```
 - RuralScapes: ```python -m training.train_video ssp_rural.yaml```
 
-
 ## Train teacher model
 
-For the pre-trained Hiera weights, download the checkpoint ```sam2_hiera_base_plus``` at https://github.com/facebookresearch/sam2?tab=readme-ov-file#sam-2-checkpoints and place it in ```base_checkpoints/```.
+For the pre-trained Hiera weights, download the checkpoint ```sam2_hiera_base_plus``` at <https://github.com/facebookresearch/sam2?tab=readme-ov-file#sam-2-checkpoints> and place it in ```base_checkpoints/```.
 
 ### Training
+
 With pre-written configs:
 
 - UAVid: ```python -m training.train_image config_teacher.yaml```
@@ -108,7 +147,6 @@ With pre-written configs:
 Replace ```CHECKPOINT``` with the name of your teacher model checkpoint. If not using the default `save_dir` (`./checkpoints`), either change the default argument in `eval.vis.image` or add the argument `--save-dir` with the corresponding directory.
 
 ```python -m eval.vis.image CHECKPOINT --save-logits --split train --skip-frames 2 --no-evaluation```
-
 
 ## Train KD-SSP
 
@@ -127,16 +165,17 @@ Train the image baseline with KD:
 `python -m training.train_video CONFIG`
 
 With `CONFIG` from:
+
 - UAVid:
-    - `dff_uavid.yaml`
-    - `netwarp_uavid.yaml`
-    - `tcbppm_uavid.yaml`
-    - `tcbocr_uavid.yaml`
+  - `dff_uavid.yaml`
+  - `netwarp_uavid.yaml`
+  - `tcbppm_uavid.yaml`
+  - `tcbocr_uavid.yaml`
 - RuralScapes:
-    - `dff_rural.yaml`
-    - `netwarp_rural.yaml`
-    - `tcbppm_rural.yaml`
-    - `tcbocr_rural.yaml`
+  - `dff_rural.yaml`
+  - `netwarp_rural.yaml`
+  - `tcbppm_rural.yaml`
+  - `tcbocr_rural.yaml`
 
 ## Evaluate model
 
@@ -148,11 +187,11 @@ Given a trained checkpoint with name `CHECKPOINT`:
 - SSP or other video model: `python -m eval.vis.video CHECKPOINT --no-write-res`
 
 ### With visualization
+
 This will write results to disk.
 
 - Image model: `python -m eval.vis.image CHECKPOINT`
 - SSP or other video model: `python -m eval.vis.video CHECKPOINT`
-
 
 ## Ablation Study
 
@@ -166,12 +205,15 @@ See the respective config files to view the different arguments:
 - Untrained image model: `python -m training.train_video untrainedimage.yaml`, fill `image_model_cfg.checkpoint_name` with an untrained checkpoint
 
 ## License
-[MIT](LICENSE)
+
+[CC BY 4.0](LICENSE)
 
 ## Contributing
+
 Contributions are welcome! Please open an issue or a pull request.
 
 ## References
+
 - [Transformers](https://huggingface.co/docs/transformers/en/index)
 - [SAM2](https://github.com/facebookresearch/sam2)
 - [RAFT](https://github.com/princeton-vl/RAFT/tree/master/core)
