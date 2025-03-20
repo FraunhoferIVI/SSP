@@ -14,11 +14,11 @@ This repository contains the training and evaluation code for **Semantic Similar
 
 ## Acknowledgments
 
-Special thanks to [**Cedric Vincent**](), the main contributor to this work.
+Special thanks to [**Cedric Vincent**](https://github.com/cvincent13), the main contributor to this work.
 
 ## Milestone
 
-- 2025/03/24: The official implementation of SSP is now open source.
+- 2025/03/20: The official implementation of **SSP** is now open source.
 - 2025/02/26: Our work has been accepted to **CVPR 2025**!
 - 2024/11/24: We have submitted this work to **CVPR 2025**. Wish us the best as we aim for recognition at one of the leading conferences in computer vision.
 
