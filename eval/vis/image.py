@@ -81,7 +81,7 @@ def main(config, checkpoint_name, checkpoint_folder, split, evaluation, best_mod
         wIoU = MetricMeter()
         accuracy = MetricMeter()
         tc = MetricMeter()
-        tc_p = MetricMeter()
+        # tc_p = MetricMeter()
         n_frames_vc = DATASET.n_frames_vc
         vc = []
         classes_mIoU = PerClassMetricMeter(DATASET.n_classes)
@@ -207,10 +207,10 @@ def main(config, checkpoint_name, checkpoint_folder, split, evaluation, best_mod
             if len(frame_list) <= 1:
                 continue
             tc.update(temporal_consistency(frame_list, pred_list, model_raft, DATASET.n_classes, device))
-            tc_p.update(temporal_consistency_proposed(frame_list, pred_list, model_raft, DATASET.n_classes, device))
+            # tc_p.update(temporal_consistency_proposed(frame_list, pred_list, model_raft, DATASET.n_classes, device))
             if len(label_list) > n_frames_vc and len(label_list) == len(pred_list):
                 vc.extend(video_consistency(label_list, pred_list, n_frames_vc))
-            video_iter.set_description(f"{v_name}: TC = {tc.avg:.4f} | Temporal Consistency Proposed = {tc_p.avg:.4f}")
+            video_iter.set_description(f"{v_name}: TC = {tc.avg:.4f}")
     
     if evaluation:
         vc = np.array(vc)
@@ -221,7 +221,7 @@ def main(config, checkpoint_name, checkpoint_folder, split, evaluation, best_mod
         global_miou = meanIoU(preds_for_iou, labels_for_iou, DATASET.n_classes, ignore_index=DATASET.ignore_index)
         global_classes_iou = class_meanIoU(preds_for_iou, labels_for_iou, DATASET.n_classes, ignore_index=DATASET.ignore_index)
         global_per_classes_mIoU = {v: global_classes_iou[k-1].item() for (k,v) in DATASET.classes.items() if k>0} if DATASET.ignore_index > 0 else {v: global_classes_iou[k].item() for (k,v) in DATASET.classes.items()}
-        print(f"mIoU = {global_miou:.4f} | Temporal Consistency = {tc.avg:.4f} | Temporal Consistency Proposed = {tc_p.avg:.4f}")
+        print(f"mIoU = {global_miou:.4f} | Temporal Consistency = {tc.avg:.4f}")
         print(per_classes_mIoU)
         print(global_per_classes_mIoU)
         with open(os.path.join(vis_dir, f"log_metrics_{split}.txt"), "a") as f:
@@ -231,7 +231,7 @@ def main(config, checkpoint_name, checkpoint_folder, split, evaluation, best_mod
             f.write(f"mIoU = {global_miou:.4f}\n")
             #f.write(f"Weighted = {wIoU.avg:.4f}\n")
             f.write(f"Temporal Consistency = {tc.avg:.4f}\n")
-            f.write(f"Temporal Consistency Proposed = {tc_p.avg:.4f}\n")
+            # f.write(f"Temporal Consistency Proposed = {tc_p.avg:.4f}\n")
             #f.write(f"Temporal Consistency FB = {tc_fb.avg:.4f}\n")
             #f.write(f"Video Consistency ({n_frames_vc}) = {vc:.4f}\n")
             #f.write(f"pixel accuracy = {accuracy.avg:.4f}\n")
