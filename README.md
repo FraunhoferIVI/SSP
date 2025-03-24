@@ -12,12 +12,27 @@
 
 This repository contains the training and evaluation code for **Semantic Similarity Propagation (SSP)** and **Knowledge Distillation with SSP (KD-SSP)**, evaluated on the [UAVid](https://uavid.nl/) and [RuralScapes](https://sites.google.com/site/aerialimageunderstanding/semantics-through-time-semi-supervised-segmentation-of-aerial-videos) datasets. The work represents our efforts towards improving temporal consistency and efficiency in semi-supervised video semantic segmentation, targeting applications in autonomous UAV flight.
 
+If you find this work beneficial, please cite it as follows:
+```bibtex
+@misc{vincent2025hightemporalconsistencysemantic,
+      title={High Temporal Consistency through Semantic Similarity Propagation in Semi-Supervised Video Semantic Segmentation
+      for Autonomous Flight},
+      author={Cédric Vincent and Taehyoung Kim and Henri Meeß},
+      year={2025},
+      eprint={2503.15676},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2503.15676},
+      }
+```
+
 ## Acknowledgments
 
 Special thanks to [**Cedric Vincent**](https://github.com/cvincent13), the main contributor to this work.
 
 ## Milestone
 
+- 2025/03/24: The official project page can be found **[HERE](https://gomtae.github.io/ssp)**.
 - 2025/03/20: The official implementation of **SSP** is now open source.
 - 2025/02/26: Our work has been accepted to **CVPR 2025**!
 - 2024/11/24: We have submitted this work to **CVPR 2025**. Wish us the best as we aim for recognition at one of the leading conferences in computer vision.
