@@ -32,7 +32,8 @@ Special thanks to [**Cedric Vincent**](https://github.com/cvincent13), the main 
 
 ## Milestone
 
-- 2025/03/24: The official project page can be found **[HERE](https://gomtae.github.io/ssp)**.
+- 2025/06/13: Our work was presented as part of the poster session at CVPR 2025, showcasing key findings and engaging with researchers in the field.
+- 2025/03/24: The official project page can be found **[HERE](https://gomtae.github.io/publications/ssp)**.
 - 2025/03/20: The official implementation of **SSP** is now open source.
 - 2025/02/26: Our work has been accepted to **CVPR 2025**!
 - 2024/11/24: We have submitted this work to **CVPR 2025**. Wish us the best as we aim for recognition at one of the leading conferences in computer vision.
@@ -221,7 +222,7 @@ See the respective config files to view the different arguments:
 
 ## License
 
-[CC BY 4.0](LICENSE)
+[CC BY-NC-SA 4.0](LICENSE)
 
 ## Contributing
 
