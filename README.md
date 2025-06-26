@@ -14,16 +14,14 @@ This repository contains the training and evaluation code for **Semantic Similar
 
 If you find this work beneficial, please cite it as follows:
 ```bibtex
-@misc{vincent2025hightemporalconsistencysemantic,
-      title={High Temporal Consistency through Semantic Similarity Propagation in Semi-Supervised Video Semantic Segmentation
-      for Autonomous Flight},
-      author={Cédric Vincent and Taehyoung Kim and Henri Meeß},
-      year={2025},
-      eprint={2503.15676},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV},
-      url={https://arxiv.org/abs/2503.15676},
-      }
+@InProceedings{Vincent_2025_CVPR,
+    author    = {Vincent, C\'edric and Kim, Taehyoung and Mee{\ss}, Henri},
+    title     = {High Temporal Consistency through Semantic Similarity Propagation in Semi-Supervised Video Semantic Segmentation for Autonomous Flight},
+    booktitle = {Proceedings of the Computer Vision and Pattern Recognition Conference (CVPR)},
+    month     = {June},
+    year      = {2025},
+    pages     = {1461-1471}
+}
 ```
 
 ## Acknowledgments
